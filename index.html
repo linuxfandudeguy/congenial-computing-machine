@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .calculator {
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            width: 200px;
+            transition: all 0.3s ease;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            cursor: move;
+        }
+
+        .calculator-header {
+            background-color: #f0f0f0;
+            padding: 5px 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .calculator-body {
+            padding: 8px;
+        }
+
+        .title {
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 3px;
+        }
+
+        input.input-field {
+            width: 100%;
+            padding: 4px;
+            margin-bottom: 4px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        button {
+            padding: 4px;
+            background-color: #b0e0e6; /* pastel blue */
+            border: none;
+            cursor: pointer;
+        }
+
+        .close-btn {
+            background-color: transparent;
+            border: none;
+            font-size: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div class="calculator-header">
+            <div class="title">Calculator</div>
+            <button class="close-btn" onclick="closeCalculator()">X</button>
+        </div>
+        <div class="calculator-body">
+            <input type="text" class="input-field" id="inputField" disabled>
+            <div class="buttons">
+                <button onclick="appendToInput('1')">1</button>
+                <button onclick="appendToInput('2')">2</button>
+                <button onclick="appendToInput('3')">3</button>
+                <button onclick="appendToInput('+')">+</button>
+                <button onclick="appendToInput('4')">4</button>
+                <button onclick="appendToInput('5')">5</button>
+                <button onclick="appendToInput('6')">6</button>
+                <button onclick="appendToInput('-')">-</button>
+                <button onclick="appendToInput('7')">7</button>
+                <button onclick="appendToInput('8')">8</button>
+                <button onclick="appendToInput('9')">9</button>
+                <button onclick="appendToInput('*')">*</button>
+                <button onclick="appendToInput('0')">0</button>
+                <button onclick="appendToInput('.')">.</button>
+                <button onclick="clearInput()">C</button>
+                <button onclick="calculateResult()">=</button>
+                <button onclick="appendToInput('/')">/</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let inputField = document.getElementById('inputField');
+        let calculator = document.querySelector('.calculator');
+        let isDragging = false;
+        let initialX;
+        let initialY;
+
+        // Function to handle mouse down event
+        calculator.addEventListener('mousedown', function(event) {
+            isDragging = true;
+            initialX = event.clientX - calculator.getBoundingClientRect().left;
+            initialY = event.clientY - calculator.getBoundingClientRect().top;
+        });
+
+        // Function to handle mouse move event
+        document.addEventListener('mousemove', function(event) {
+            if (isDragging) {
+                let newX = event.clientX - initialX;
+                let newY = event.clientY - initialY;
+                calculator.style.left = newX + 'px';
+                calculator.style.top = newY + 'px';
+            }
+        });
+
+        // Function to handle mouse up event
+        document.addEventListener('mouseup', function() {
+            isDragging = false;
+        });
+
+        // Function to append value to input field
+        function appendToInput(value) {
+            inputField.value += value;
+        }
+
+        // Function to clear input field
+        function clearInput() {
+            inputField.value = '';
+        }
+
+        // Function to calculate result
+        function calculateResult() {
+            try {
+                inputField.value = eval(inputField.value);
+            } catch (error) {
+                inputField.value = 'Error';
+            }
+        }
+
+        // Function to close calculator
+        function closeCalculator() {
+            calculator.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
